@@ -1,0 +1,92 @@
+clear all;
+close all;
+clc;
+
+global sigma;
+global rho;
+global beta;
+
+sigma = 10;
+rho = 28;
+beta = 8/3;
+      
+t = linspace (0, 50, 5001);
+
+% 1st run
+x0 = [0; 1; 1.05];
+[t x1] = ode45(@(t, x) flor(x, t), t, x0);
+
+figure(1);
+subplot(3, 3, 1);
+plot(t, x1(:,1), 'r');
+xlabel('t');
+ylabel('X');
+title('X component');
+grid;
+
+subplot(3, 3, 4);
+plot(t, x1(:,2), 'g');
+xlabel('t');
+ylabel('Y');
+title('Y component');
+grid;
+
+subplot(3, 3, 7);
+plot(t, x1(:,3), 'b');
+xlabel('t');
+ylabel('Z');
+title(' component');
+grid;
+
+for n = 0.1:0.1:5
+    x0_n = x0 + n;
+    [t xn] = ode45(@(t, x) flor(x, t), t, x0_n);
+    
+    subplot(3, 3, 2);
+    plot(t, xn(:,1), 'r');
+    drawnow;
+    xlabel('t');
+    ylabel('X');
+    title("X - x0 = " + num2str(x0_n(1)));
+    grid;
+
+    subplot(3, 3, 3);
+    plot(t, x1(:,1) - xn(:,1));
+    drawnow;
+    xlabel('t');
+    ylabel('difference');
+    title('Evolution of difference - X');
+    grid;
+
+    subplot(3, 3, 5);
+    plot(t, xn(:,2), 'g');
+    drawnow;
+    xlabel('t');
+    ylabel('Y');
+    title("Y - y0 = " + num2str(x0_n(2)));
+    grid;
+
+    subplot(3, 3, 6);
+    plot(t, x1(:,2) - xn(:,2));
+    drawnow;
+    xlabel('t');
+    ylabel('difference');
+    title('Evolution of difference - Y');
+    grid;
+
+    subplot(3, 3, 8);
+    plot(t, xn(:,3), 'b');
+    drawnow;
+    xlabel('t');
+    ylabel('Z');
+    title("Z - z0 = " + num2str(x0_n(3)));
+    grid;
+
+    subplot(3, 3, 9);
+    plot(t, x1(:,3) - xn(:,3));
+    drawnow;
+    xlabel('t');
+    ylabel('difference');
+    title('Evolution of difference - Z');
+    grid;
+end %for a
